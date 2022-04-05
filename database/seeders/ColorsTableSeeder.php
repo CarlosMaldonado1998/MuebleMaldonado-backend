@@ -17,12 +17,12 @@ class ColorsTableSeeder extends Seeder
         Color::truncate();
 
         $faker = \Faker\Factory::create();
-
-        for($i = 0; $i < 5; $i++ ){
-            Color::create([
-                'name'=>$faker->colorName,
-                'url' =>$faker->imageUrl($width = 640, $height = 480),
-            ]);
-        }
+            for ($i = 0; $i < 10; $i++){
+                $image_name = $faker->image('public/storage/colors', 400, 300, null);
+                Color::create([
+                    'name'=>$faker->colorName,
+                    'url' =>'images'.$image_name,
+                ]);
+            }
     }
 }

@@ -28,7 +28,8 @@ class UsersTableSeeder extends Seeder
             'password'=> $password,
             'cellphone'=> '0987202894',
             'city'=>'Quito' ,
-            'address'=>'Pisulli'
+            'address'=>'Pisulli',
+            'role'=> User::ROLE_SUPERADMIN,
             ]);
 
         for($i = 0; $i < 10; $i++ ){
@@ -40,6 +41,7 @@ class UsersTableSeeder extends Seeder
                 'cellphone'=> '0969055431',
                 'city'=>$faker->city ,
                 'address'=>$faker->address,
+                'role'=> User::ROLE_USER,
             ]);
         }
     }

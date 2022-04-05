@@ -18,7 +18,7 @@ class RoomsTableSeeder extends Seeder
 
         $faker = \Faker\Factory::create();
 
-        for($i = 0; $i < 10; $i++ ){
+        for($i = 0; $i < 5; $i++ ){
             Room::create([
                 'name'=>$faker->word,
             ]);

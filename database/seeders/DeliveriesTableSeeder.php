@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Delivery;
+use App\Models\Category;
 
 class DeliveriesTableSeeder extends Seeder
 {
@@ -18,12 +19,19 @@ class DeliveriesTableSeeder extends Seeder
 
         $faker = \Faker\Factory::create();
 
-        for($i = 0; $i < 5; $i++ ){
-            Delivery::create([
-                'title'=>$faker->word,
-                'description'=>$faker->paragraph,
-                'url' =>$faker->imageUrl($width = 640, $height = 480),
-            ]);
-        }
+        //Asignacion de categoria ficticia a productos entregados
+        $categories = Category::all();
+        foreach ( $categories as $category){
+            $num_categories= rand(1, 3);
+            for ($i = 0; $i < $num_categories; $i++){
+                $image_name = $faker->image('public/storage/delivered', 400, 300, null);
+                Delivery::create([
+                    'title'=>$faker->word,
+                    'description'=>$faker->paragraph,
+                    'url' =>'images'.$image_name,
+                    'category_id'=> $category->id,
+                ]);
+             }
+        } 
     }
 }

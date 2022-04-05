@@ -74,11 +74,14 @@ class UserController extends Controller
         }
         return response()->json(new UserCollection(compact('user')),200);
     }
+
+
     public function index()
     {
         $this->authorize('viewAny', User::class);
         return new UserCollection(User::paginate(10));
     }
+    
     public function showAll()
     {
         $this->authorize('viewAny', User::class);

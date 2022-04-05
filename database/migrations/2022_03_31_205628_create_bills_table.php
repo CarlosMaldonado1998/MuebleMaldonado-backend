@@ -15,7 +15,7 @@ class CreateBillsTable extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->time('date');
+            $table->dateTime('date');
             $table->string('type_pay');
             $table->string('state');
             $table->decimal('iva', $precision = 8, $scale = 2);

@@ -12,4 +12,9 @@ class Color extends Model
         'name',
         'url', 
         ];
+
+
+    public function products(){
+        return $this->belongsToMany('App\Models\Product')->withTimestamps()->withPivot('id');
+    }
 }

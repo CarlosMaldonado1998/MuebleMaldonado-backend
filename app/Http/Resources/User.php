@@ -31,6 +31,11 @@ class User extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'lastname' => $this->lastname,
+            'cellphone' => $this->cellphone,
+            'city' => $this->city,
+            'address'=> $this->address,
+            'role' => $this->role,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
             ];

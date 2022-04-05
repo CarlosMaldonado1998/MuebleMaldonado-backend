@@ -11,6 +11,11 @@ class Delivery extends Model
     protected $fillable =[ 
         'title',
         'description',
-        'url'
+        'url',
+        'category_id'
         ];
+
+    public function category(){
+        return $this->belongsTo('App\Models\Category');
+    }
 }

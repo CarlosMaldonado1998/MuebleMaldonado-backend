@@ -8,8 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Price extends Model
 {
     use HasFactory;
-    protected $fillable =[ 
+    protected $fillable = [ 
         'dimension',
-        'value'
-        ];
+        'value',
+        'product_id'
+    ];
+  
+    public function product(){
+        return $this->belongsTo('App\Models\Product');
+    }
 }

@@ -17,7 +17,7 @@ class CategoriesTableSeeder extends Seeder
         Category::truncate();
 
         $faker = \Faker\Factory::create();
-
+        
         for($i = 0; $i < 5; $i++ ){
             Category::create([
                 'name'=>$faker->word,

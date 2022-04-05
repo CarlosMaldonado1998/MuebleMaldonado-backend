@@ -16,5 +16,16 @@ class Bill extends Model
         'val_iva',
         'subtotal', 
         'total', 
+        'user_id'
     ];
+
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+    
+    public function orders(){
+        return $this->hasMany('App\Models\Order');
+    }
+
+
 }

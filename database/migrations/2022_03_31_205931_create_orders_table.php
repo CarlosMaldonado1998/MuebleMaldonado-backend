@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->string('dimension');
             $table->float('value', 8 ,2);
-            $table->bigInteger('amount')->nullable();
+            $table->bigInteger('amount');
             $table->timestamps();
         });
     }
