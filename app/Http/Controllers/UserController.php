@@ -40,11 +40,15 @@ class UserController extends Controller
             );
     }
     public function register(Request $request){
-        $this->authorize('create',User::class);
+        
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'lastname' => 'required|string|max:255',
+            'cellphone' => 'required',
+            'city' => 'required|string|max:255',
+            'role' => 'required'
         ]);
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
@@ -53,14 +57,17 @@ class UserController extends Controller
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
+            'lastname' => $request->get('lastname'),
+            'cellphone' => $request->get('cellphone'),
+            'city' => $request->get('city'),
+            'role' => $request->get('role')
         ]);
 
         return response()->json(compact('user'),201);
-
     }
+
     public function getAuthenticatedUser()
     {
-
         try {
             if (! $user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);

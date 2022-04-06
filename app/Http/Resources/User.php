@@ -7,7 +7,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordInterface;
 use Illuminate\Notifications\Notifiable;
 
-class User extends JsonResource
+class User extends JsonResource implements CanResetPasswordInterface
 {
     use Notifiable;
     use CanResetPassword;
@@ -35,7 +35,6 @@ class User extends JsonResource
             'cellphone' => $this->cellphone,
             'city' => $this->city,
             'address'=> $this->address,
-            'role' => $this->role,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
             ];

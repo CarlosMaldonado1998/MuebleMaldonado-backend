@@ -28,18 +28,25 @@ class UsersTableSeeder extends Seeder
             'password'=> $password,
             'cellphone'=> '0987202894',
             'city'=>'Quito' ,
-            'address'=>'Pisulli',
             'role'=> User::ROLE_SUPERADMIN,
             ]);
+        User::create([
+            'name'=> 'Administrador',
+            'lastname'=> 'Ayudante',
+            'email'=> 'admin1@prueba.com',
+            'password'=> $password,
+            'cellphone'=> '0987202894',
+            'city'=>'Quito' ,
+            'role'=> User::ROLE_SUPERADMIN,
+        ]);
 
-        for($i = 0; $i < 10; $i++ ){
+        for($i = 0; $i < 5; $i++ ){
             User::create([
                 'name'=> $faker->firstName,
                 'lastname'=> $faker->lastName,
                 'email'=> $faker->email,
                 'password'=> $password,
                 'cellphone'=> '0969055431',
-                'city'=>$faker->city ,
                 'address'=>$faker->address,
                 'role'=> User::ROLE_USER,
             ]);

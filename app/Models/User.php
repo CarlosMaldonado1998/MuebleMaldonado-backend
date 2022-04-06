@@ -34,7 +34,6 @@ class User extends Authenticatable  implements JWTSubject
         'lastname',
         'cellphone',
         'city',
-        'address'
     ];
 
     /**
