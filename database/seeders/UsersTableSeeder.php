@@ -47,7 +47,7 @@ class UsersTableSeeder extends Seeder
                 'email'=> $faker->email,
                 'password'=> $password,
                 'cellphone'=> '0969055431',
-                'address'=>$faker->address,
+                'city'=>'Quito' ,
                 'role'=> User::ROLE_USER,
             ]);
         }

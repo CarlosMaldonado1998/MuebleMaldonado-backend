@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
 Route::post('login', 'App\Http\Controllers\UserController@authenticate');
 Route::post('register', 'App\Http\Controllers\UserController@register');
 
+Route::post('contacts', 'App\\Http\\Controllers\\ContactController@store');
 
 Route::get('products', 'App\\Http\\Controllers\\ProductController@index');
 Route::get('products/{product}', 'App\\Http\\Controllers\\ProductController@show');
@@ -143,6 +144,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('bills', 'App\\Http\\Controllers\\BillController@store');
     Route::put('bills/{bill}', 'App\\Http\\Controllers\\BillController@update');
     Route::delete('bills/{bill}', 'App\\Http\\Controllers\\BillController@delete');
+
+    //Bills 
+    Route::get('contacts', 'App\\Http\\Controllers\\ContactController@index');
+    Route::get('contacts/{contact}', 'App\\Http\\Controllers\\ContactController@show');
+    Route::put('contacts/{contact}', 'App\\Http\\Controllers\\ContactController@update');
+    Route::delete('contacts/{contact}', 'App\\Http\\Controllers\\ContactController@delete');
 
     
 });

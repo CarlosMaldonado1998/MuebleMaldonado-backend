@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(OrdersTableSeeder::class); 
         $this->call(ImagesTableSeeder::class);
         $this->call(PricesTableSeeder::class);
+        $this->call(ContactTableSeeder::class);
         Schema::enableForeignKeyConstraints();
     }
 }

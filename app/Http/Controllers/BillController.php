@@ -46,6 +46,8 @@ class BillController extends Controller
                 $bill->orders()->create($order);
             }
         }
+
+        Mail::to(env('MAIL_CONTACT'))->send(new NewContact($bill));
         return response()->json(new BillResource($bill), 201);
     }
 
