@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Delivery;
+use App\Models\Category;
 use App\Http\Resources\Delivery as DeliveryResource;
 use App\Http\Resources\DeliveryCollection;
 use Illuminate\Support\Facades\Storage;
@@ -25,8 +26,17 @@ class DeliveryController extends Controller
         return new DeliveryCollection(Delivery::paginate(10));
     }
 
+    public function all(){
+        return new DeliveryCollection(Delivery::all());
+    }
+
     public function show(Delivery $delivery){
         return response()->json(new DeliveryResource($delivery), 200);
+    }
+
+    public function showProductsDeliveredByCategory(Category $category){
+        $product = Delivery::where("category_id", $category['id'])->get();
+        return response()->json(new DeliveryCollection($product), 200);
     }
 
     public function store (Request $request){

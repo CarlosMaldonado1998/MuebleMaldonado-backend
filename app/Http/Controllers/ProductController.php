@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Image;
+use App\Models\Category;
+use App\Models\Room;
 use App\Http\Resources\Product as ProductResource;
 use App\Http\Resources\ProductCollection;
 use Illuminate\Support\Facades\DB;
@@ -33,8 +35,27 @@ class ProductController extends Controller
         return new ProductCollection(Product::paginate(10));
     }
 
+    public function all(){
+        return new ProductCollection(Product::all());
+    }
+
     public function show(Product $product){
         return response()->json(new ProductResource($product), 200);;
+    }
+
+    public function showProductsByCategory(Category $category){
+        $product = Product::where("category_id", $category['id'])->get();
+        return response()->json(new ProductCollection($product), 200);
+    }
+
+    public function showProductsByRoom(Room $room){
+        $product = Product::where("room_id", $room['id'])->get();
+        return response()->json(new ProductCollection($product), 200);
+    }
+
+    public function showProductsLatestAdd(){
+        $product = Product::latest()->take(5)->get();
+        return response()->json(new ProductCollection($product), 200);
     }
 
     public function store (Request $request){

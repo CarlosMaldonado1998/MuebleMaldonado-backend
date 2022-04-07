@@ -25,10 +25,18 @@ Route::post('register', 'App\Http\Controllers\UserController@register');
 Route::post('contacts', 'App\\Http\\Controllers\\ContactController@store');
 
 Route::get('products', 'App\\Http\\Controllers\\ProductController@index');
+Route::get('products/all', 'App\\Http\\Controllers\\ProductController@all');
+Route::get('products/latest', 'App\\Http\\Controllers\\ProductController@showProductsLatestAdd');
 Route::get('products/{product}', 'App\\Http\\Controllers\\ProductController@show');
+Route::get('products/category/{category}', 'App\\Http\\Controllers\\ProductController@showProductsByCategory');
+Route::get('products/room/{room}', 'App\\Http\\Controllers\\ProductController@showProductsByRoom');
+
 
 Route::get('deliveries', 'App\\Http\\Controllers\\DeliveryController@index');
+Route::get('deliveries/all', 'App\\Http\\Controllers\\DeliveryController@all');
 Route::get('deliveries/{deliveries}', 'App\\Http\\Controllers\\DeliveryController@show');
+Route::get('deliveries/category/{category}', 'App\\Http\\Controllers\\DeliveryController@showProductsDeliveredByCategory');
+
 
 Route::get('categories', 'App\\Http\\Controllers\\CategoryController@index');
 Route::get('categories/{category}', 'App\\Http\\Controllers\\CategoryController@show');
@@ -39,11 +47,6 @@ Route::get('colors/{color}', 'App\\Http\\Controllers\\ColorController@show');
 Route::get('rooms', 'App\\Http\\Controllers\\RoomController@index');
 Route::get('rooms/{room}', 'App\\Http\\Controllers\\RoomController@show');
 
-Route::get('prices', 'App\\Http\\Controllers\\PriceController@index');
-Route::get('prices/{price}', 'App\\Http\\Controllers\\PriceController@show');
-
-Route::get('images', 'App\\Http\\Controllers\\ImageController@index');
-Route::get('images/{image}', 'App\\Http\\Controllers\\ImageController@show');
 
 
 
@@ -92,8 +95,14 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('users/all', 'App\Http\Controllers\UserController@showAll');
     Route::get('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
     Route::get('users/{user}', 'App\Http\Controllers\UserController@show');
+    Route::get('users/{user}/bills', 'App\Http\Controllers\UserController@showMyBills');
+    Route::get('users/{user}/bills/{bill}/orders', 'App\Http\Controllers\UserController@showMyOrdersBills');
     Route::put('users/{user}', 'App\Http\Controllers\UserController@update');
     Route::delete('users/{user}', 'App\Http\Controllers\UserController@delete');
+
+
+    Route::put('/change_password', 'App\\Http\\Controllers\\UserController@updatePassword');
+
 
     /* Administrador */ 
     //Categories 
@@ -129,6 +138,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
 
 
+    Route::get('prices', 'App\\Http\\Controllers\\PriceController@index');
+    Route::get('prices/{price}', 'App\\Http\\Controllers\\PriceController@show');
+
+    Route::get('images', 'App\\Http\\Controllers\\ImageController@index');
+    Route::get('images/{image}', 'App\\Http\\Controllers\\ImageController@show');
+
     /* Usuarios y Administrador*/ 
 
     //Orders    
@@ -140,6 +155,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     //Bills 
     Route::get('bills', 'App\\Http\\Controllers\\BillController@index');
+    Route::get('bills/all', 'App\\Http\\Controllers\\BillController@all');
     Route::get('bills/{bill}', 'App\\Http\\Controllers\\BillController@show');
     Route::post('bills', 'App\\Http\\Controllers\\BillController@store');
     Route::put('bills/{bill}', 'App\\Http\\Controllers\\BillController@update');

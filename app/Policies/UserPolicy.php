@@ -59,7 +59,6 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        // USER
         return $user->isGranted(User::ROLE_USER) && $user->id === $model->id;
     }
 

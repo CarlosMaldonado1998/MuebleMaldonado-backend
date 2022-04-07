@@ -29,6 +29,11 @@ class OrderController extends Controller
         return new OrderCollection(Order::paginate(10));
     }
 
+    public function all(){
+        $this->authorize('viewAny', Order::class);
+        return new OrderCollection(Order::all());
+    }
+
     public function show(Order $order){
         $this->authorize('view', $order);
         return response()->json(new OrderResource($order), 200);

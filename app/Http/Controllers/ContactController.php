@@ -27,6 +27,11 @@ class ContactController extends Controller
         return new ContactColection(Contact::paginate(10));
     }
 
+    public function all(){
+        $this->authorize('viewAny', Contact::class);
+        return new ContactColection(Contact::all());
+    }
+
     public function show(Contact $contact){
         $this->authorize('view', $contact);
         return response()->json(new ContactResource($contact), 200);

@@ -6,11 +6,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Models\User;
+use App\Models\Bill;
+use App\Models\Order;
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\UserCollection;
+use App\Http\Resources\BillCollection;
+use App\Http\Resources\OrderCollection;
 
 class UserController extends Controller
 {
@@ -100,10 +105,29 @@ class UserController extends Controller
         return response()->json(new UserResource($user),200);
     }
 
+    public function showMyBills(User $user){
+        $this->authorize('view',$user);
+        $bill = Bill::where("user_id", $user['id'])->get();
+        return response()->json(new BillCollection($bill), 200);
+    }
+
+    public function showMyOrdersBills(User $user, Bill $bill){
+        $this->authorize('view',$user);
+        $bill = Order::where("user_id", $user['id'])->where("bill_id", $bill['id'])->get();
+        return response()->json(new OrderCollection($bill), 200);
+    }
+
     public function update(Request $request, User $user)
     {
         $this->authorize('update',$user);
-        $user->update($request->all());
+        $user->update($request->only([
+            'name',
+            'email',
+            'lastname' ,
+            'cellphone' ,
+            'city' ,
+            ]
+        ));
         return response()->json($user,200);
     }
     public function delete(User $user)
@@ -138,5 +162,20 @@ class UserController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json(["message" => "No se pudo cerrar la sesión."], 500);
         }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+        $this->authorize('update',$user);
+        
+        $request->validate([
+            'current_password' => 'required|min:6|current_password',
+            'password' => 'required|min:6|confirmed'
+        ]);
+        $user->update([
+            'password' => Hash::make($request->get('password')),
+        ]);
+        return response()->json($user, 200);
     }
 }

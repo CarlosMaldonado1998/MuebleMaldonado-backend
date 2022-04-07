@@ -20,7 +20,7 @@ class ColorController extends Controller
     ];
 
     public function index(){
-        return new ColorColection(Color::paginate(10));
+        return new ColorColection(Color::all());
     }
 
     public function show(Color $color){

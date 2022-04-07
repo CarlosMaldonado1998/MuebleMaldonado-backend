@@ -30,6 +30,10 @@ class BillController extends Controller
         return new BillCollection(Bill::paginate(10));
     }
 
+    public function all(){
+        $this->authorize('viewAny',Bill::class);
+        return new BillCollection(Bill::all());
+    }
     public function show(Bill $bill){
         $this->authorize('view',$bill);
         return response()->json(new BillResource($bill), 200);
