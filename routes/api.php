@@ -148,6 +148,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     //Orders    
     Route::get('orders', 'App\\Http\\Controllers\\OrderController@index');
+    Route::get('orders/all', 'App\\Http\\Controllers\\OrderController@all');
     Route::get('orders/{order}', 'App\\Http\\Controllers\\OrderController@show');
     Route::post('orders', 'App\\Http\\Controllers\\OrderController@store');
     Route::put('orders/{order}', 'App\\Http\\Controllers\\OrderController@update');
@@ -163,6 +164,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     //Bills 
     Route::get('contacts', 'App\\Http\\Controllers\\ContactController@index');
+    Route::get('contacts/all', 'App\\Http\\Controllers\\ContactController@all');
     Route::get('contacts/{contact}', 'App\\Http\\Controllers\\ContactController@show');
     Route::put('contacts/{contact}', 'App\\Http\\Controllers\\ContactController@update');
     Route::delete('contacts/{contact}', 'App\\Http\\Controllers\\ContactController@delete');
