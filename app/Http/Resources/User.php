@@ -34,7 +34,6 @@ class User extends JsonResource implements CanResetPasswordInterface
             'lastname' => $this->lastname,
             'cellphone' => $this->cellphone,
             'city' => $this->city,
-            'address'=> $this->address,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
             ];

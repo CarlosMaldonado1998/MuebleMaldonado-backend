@@ -15,6 +15,7 @@ class RoomController extends Controller
 
     public static $rules = [
         'name' =>'required|string|unique:rooms|max:255', 
+        'url' => 'required|image|dimensions:min width=200, min height=200', 
     ];
 
     public function index(){
@@ -29,6 +30,10 @@ class RoomController extends Controller
         $this->authorize('create',Room::class);
         $request->validate( self::$rules, self::$messages);
         $room = Room::create($request->all());
+         $path = $request->url->store('public/rooms');
+        $color->url = $path;
+        $color->name = $request->name;
+        $color->save();
         return response()->json($room, 201);
     }
 
@@ -37,7 +42,14 @@ class RoomController extends Controller
         $request->validate([
             'name' =>'required|string|unique:rooms,name,'.$room->id.'|max:255', 
         ],self::$messages);
-        $room ->update($request->all());
+
+        $room->name = $request->name;
+        if($request->hasFile('url')) {
+            Storage::delete($room->url);
+            $path = $request->url->store('public/rooms');
+            $room->url = $path;
+        }
+        $room->update();
         return response()->json($room, 200);
     }
 

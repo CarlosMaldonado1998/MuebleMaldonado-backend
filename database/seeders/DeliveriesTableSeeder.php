@@ -22,8 +22,7 @@ class DeliveriesTableSeeder extends Seeder
         //Asignacion de categoria ficticia a productos entregados
         $categories = Category::all();
         foreach ( $categories as $category){
-            $num_categories= rand(1, 3);
-            for ($i = 0; $i < $num_categories; $i++){
+           
                 $image_name = $faker->image('public/storage/delivered', 400, 300, null);
                 Delivery::create([
                     'title'=>$faker->word,
@@ -31,7 +30,7 @@ class DeliveriesTableSeeder extends Seeder
                     'url' =>'images'.$image_name,
                     'category_id'=> $category->id,
                 ]);
-             }
+            
         } 
     }
 }

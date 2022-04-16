@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Category as CategoryResource;
 
 class Room extends JsonResource
 {
@@ -17,6 +18,8 @@ class Room extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'url' => $this->url,
+            'categories' =>CategoryResource::collection($this->categories),
         ];
     }
 }

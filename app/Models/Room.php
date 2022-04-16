@@ -10,9 +10,14 @@ class Room extends Model
     use HasFactory;
     protected $fillable =[ 
         'name',
+        'url'
         ];
 
         public function products(){
             return $this->hasMany('App\Models\Product');
+        }
+
+        public function categories(){
+            return $this->hasMany('App\Models\Category');
         }
 }

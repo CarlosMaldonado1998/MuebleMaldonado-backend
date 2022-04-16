@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         Schema::disableForeignKeyConstraints();
         $this->call(UsersTableSeeder::class);
-        $this->call(DeliveriesTableSeeder::class);
-        $this->call(CategoriesTableSeeder::class);
         $this->call(RoomsTableSeeder::class);
+        $this->call(CategoriesTableSeeder::class);
+        $this->call(DeliveriesTableSeeder::class);
         $this->call(ColorsTableSeeder::class);
         $this->call(ProductsTableSeeder::class);
         $this->call(BillsTableSeeder::class);

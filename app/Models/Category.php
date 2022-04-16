@@ -10,6 +10,7 @@ class Category extends Model
     use HasFactory;
     protected $fillable =[ 
         'name',
+        'room_id'
         ];
 
         public function products(){
@@ -19,4 +20,8 @@ class Category extends Model
         public function deliveries(){
             return $this->hasMany('App\Models\Delivery');
         }
+
+        public function room(){
+        return $this->belongsTo('App\Models\Room');
+    }
 }

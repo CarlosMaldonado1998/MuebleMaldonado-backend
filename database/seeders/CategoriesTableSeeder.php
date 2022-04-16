@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Category;
+use App\Models\Room;
 
 class CategoriesTableSeeder extends Seeder
 {
@@ -18,10 +19,16 @@ class CategoriesTableSeeder extends Seeder
 
         $faker = \Faker\Factory::create();
         
-        for($i = 0; $i < 5; $i++ ){
+        $rooms = Room::all();
+        foreach ( $rooms as $room){
+            for($i = 0; $i < 2; $i++ ){
             Category::create([
                 'name'=>$faker->word,
+                'room_id'=>$room->id
             ]);
         }
+        }
+
+        
     }
 }

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Product;
-use App\Models\Room;
 use App\Models\Category;
 use App\Models\Color;
 
@@ -22,14 +21,12 @@ class ProductsTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
 
          //Asignacion de cuarto a un producto 
-         $rooms = Room::all();
          $categories = Category::all();
-         foreach ($rooms as $room) {
-
+    
             //Asignacion de categoria a un producto 
             foreach ( $categories as $category){
-                $num_prices= rand(0, 1);
-                for ($i = 0; $i < $num_prices; $i++){
+                $num_products= rand(1, 2);
+                for ($i = 0; $i < $num_products; $i++){
                     $product = Product::create([
                         'name'=>$faker->name,
                         'code' =>$faker->numerify('MMA ###'), 
@@ -37,7 +34,7 @@ class ProductsTableSeeder extends Seeder
                         'warranty'=>$faker->numerify('# años.'),
                         'material' =>$faker->randomElement($array = array ('melamina','madera','MDF')),
                         'delivery_time' =>$faker->numerify('## días laborables.'),
-                        'room_id'=> $room->id,
+                        'room_id'=> $category->room_id,
                         'category_id'=> $category->id,
                     ]);
 
@@ -53,7 +50,7 @@ class ProductsTableSeeder extends Seeder
                         )
                     );
                  }
-            }  
+            
          }
     }
 }

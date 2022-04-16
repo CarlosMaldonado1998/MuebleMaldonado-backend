@@ -15,6 +15,7 @@ class CategoryController extends Controller
 
     public static $rules = [
         'name' =>'required|string|unique:categories|max:255',
+        'room_id' =>'required|integer|exists:rooms,id'
     ];
 
     public function index(){
@@ -36,6 +37,7 @@ class CategoryController extends Controller
         $this->authorize('update',$category);
         $request->validate([
             'name' =>'required|string|unique:categories,name,'.$category->id.'|max:255', 
+            'room_id' =>'required|integer|exists:rooms,id'
         ],self::$messages); 
         $category ->update($request->all());
         return response()->json($category, 200);
