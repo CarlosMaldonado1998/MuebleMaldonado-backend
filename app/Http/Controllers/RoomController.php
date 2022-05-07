@@ -30,10 +30,18 @@ class RoomController extends Controller
         $this->authorize('create',Room::class);
         $request->validate( self::$rules, self::$messages);
         $room = Room::create($request->all());
-         $path = $request->url->store('public/rooms');
-        $color->url = $path;
-        $color->name = $request->name;
-        $color->save();
+         $path = $request->url->getRealPath();
+         Cloudder::upload($path, null,array(
+            "folder" => "Mueble_Maldonado/rooms",
+            "overwrite" => FALSE,
+            "resource_type" => "image",
+            "responsive" => TRUE,
+         ));
+         $path = Cloudder::getResult();
+         
+        $room->url = Cloudder::getPublicId();
+        $room->name = $request->name;
+        $room->save();
         return response()->json($room, 201);
     }
 
@@ -45,9 +53,18 @@ class RoomController extends Controller
 
         $room->name = $request->name;
         if($request->hasFile('url')) {
-            Storage::delete($room->url);
-            $path = $request->url->store('public/rooms');
-            $room->url = $path;
+            $publicId = $room->url;
+            Cloudder::destroyImage($publicId);
+            Cloudder::delete($publicId);
+            $path = $request->url->getRealPath();
+            Cloudder::upload($path, null, array(
+                "folder" => "Mueble_Maldonado/rooms",
+                "overwrite" => FALSE,
+                "resource_type" => "image",
+                "responsive" => TRUE,
+            ));
+            $path = Cloudder::getResult();
+            $room->url = Cloudder::getPublicId();
         }
         $room->update();
         return response()->json($room, 200);
@@ -55,6 +72,9 @@ class RoomController extends Controller
 
     public function delete (Room $room ){ 
         $this->authorize('delete',$room);
+        $publicId = $room->url;
+        Cloudder::destroyImage();
+        Cloudder::delete();
         $room->delete();
         return response()->json(null, 204);
     }

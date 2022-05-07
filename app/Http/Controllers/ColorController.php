@@ -7,6 +7,7 @@ use App\Models\Color;
 use App\Http\Resources\Color as ColorResource;
 use App\Http\Resources\ColorCollection;
 use Illuminate\Support\Facades\Storage;
+use Cloudder;
 
 class ColorController extends Controller
 {
@@ -20,7 +21,7 @@ class ColorController extends Controller
     ];
 
     public function index(){
-        return new ColorColection(Color::all());
+        return new ColorCollection(Color::all());
     }
 
     public function show(Color $color){
@@ -32,9 +33,19 @@ class ColorController extends Controller
         $request->validate(self::$rules, self::$messages);
 
         $color = Color::create($request->all());
-        $path = $request->url->store('public/colors');
-        $color->url = $path;
         $color->name = $request->name;
+
+        $path = $request->url->getRealPath();
+        Cloudder::upload($path, null, array(
+            "folder" => "Mueble_Maldonado/colors",
+            "overwrite" => FALSE,
+            "resource_type" => "image",
+            "responsive" => TRUE,
+        ));
+
+        $path = Cloudder::getResult();
+        $color->url = Cloudder::getPublicId();
+        
         $color->save();
         return response()->json(new ColorResource($color), 201);
     }
@@ -46,9 +57,18 @@ class ColorController extends Controller
         ], self::$messages);
         $color->name = $request->name;
         if($request->hasFile('url')) {
-            Storage::delete($color->url);
-            $path = $request->url->store('public/delivered');
-            $color->url = $path;
+            $publicId = $color->url;
+            Cloudder::destroyImage($publicId);
+            Cloudder::delete($publicId);
+            $path = $request->url->getRealPath();
+            Cloudder::upload($path, null, array(
+                "folder" => "Mueble_Maldonado/colors",
+                "overwrite" => FALSE,
+                "resource_type" => "image",
+                "responsive" => TRUE,
+            ));
+            $path = Cloudder::getResult();
+            $color->url = Cloudder::getPublicId();
         }
         $color->update();
         return response()->json($color, 200);
@@ -56,7 +76,9 @@ class ColorController extends Controller
 
     public function delete (Color $color ){
         $this->authorize('delete',$color);
-        Storage::delete($color->url);
+        $publicId = $color->url;
+        Cloudder::destroyImage($publicId);
+        Cloudder::delete($publicId);
         $color->delete();
         return response()->json(null, 204);
     }

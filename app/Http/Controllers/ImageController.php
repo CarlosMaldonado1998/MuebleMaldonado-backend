@@ -38,19 +38,34 @@ class ImageController extends Controller
        {
            foreach($images as $key=>$v)
            {
-               $path = $images[$key]->store('public/products');
-               $image = Image::create(
+                $path = $images[$key]->getRealPath();
+                Cloudder::upload($path, null, array(
+                     "folder" => "Mueble_Maldonado/products",
+                    "overwrite" => FALSE,
+                    "resource_type" => "image",
+                    "responsive" => TRUE,
+                ));
+                $path = Cloudder::getResult();
+                $link = Cloudder::getPublicId();
+                 $image = Image::create(
                 [
-                    'url' => $path,
+                    'url' => $link,
                     'product_id' => $request->product_id,
                 ]
              );
            }
        } else {
-           $path = $images->store('public/products');
-           $image = Image::create(
+           $path = $images->getRealPath();
+            Cloudder::upload($path, null, array(
+                     "folder" => "Mueble_Maldonado/products",
+                    "overwrite" => FALSE,
+                    "resource_type" => "image",
+                    "responsive" => TRUE,
+                ));
+            $path = Cloudder::getResult();
+            $link = Cloudder::getPublicId(); $image = Image::create(
                [
-                   'url' => $path,
+                   'url' => $link,
                    'product_id' => $request->product_id,
                ]
             );
@@ -68,9 +83,18 @@ class ImageController extends Controller
         
         $image->product_id = $request->product_id;
         if($request->hasFile('url')) {
-            Storage::delete($image->url);
-            $path = $request->url->store('public/delivered');
-            $image->url = $path;
+            $publicId = $image->url;
+            Cloudder::destroyImage($publicId);
+            Cloudder::delete($publicId);
+            $path = $request->url->getRealPath();
+            Cloudder::upload($path, null, array(
+                "folder" => "Mueble_Maldonado/colors",
+                "overwrite" => FALSE,
+                "resource_type" => "image",
+                "responsive" => TRUE,
+            ));
+            $path = Cloudder::getResult();
+            $image->url = Cloudder::getPublicId();
         }
         $image->update();
         return response()->json($image, 200);
@@ -78,7 +102,9 @@ class ImageController extends Controller
 
     public function delete (Image $image ){
         $this->authorize('delete',$image);
-        Storage::delete($image->url);
+        $publicId = $image->url;
+        Cloudder::destroyImage($publicId);
+        Cloudder::delete($publicId);
         $image->delete();
         return response()->json(null, 204);
     }

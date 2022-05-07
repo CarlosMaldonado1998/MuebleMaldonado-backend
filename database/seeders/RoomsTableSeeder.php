@@ -17,12 +17,10 @@ class RoomsTableSeeder extends Seeder
         Room::truncate();
 
         $faker = \Faker\Factory::create();
-
         for($i = 0; $i < 5; $i++ ){
-            $image_name = $faker->image('public/storage/rooms', 400, 300, null);
             Room::create([
                 'name'=>$faker->word,
-                'url' =>'images'.$image_name,
+                'url' =>'Mueble_Maldonado/rooms/room1_t2ndqt',
             ]);
         }
     }

@@ -86,20 +86,36 @@ class ProductController extends Controller
         {
             foreach($images as $key=>$v)
             {
-                $path = $images[$key]->store('public/products');
+                $path = $images[$key]->getRealPath();
+                Cloudder::upload($path, null, array(
+                     "folder" => "Mueble_Maldonado/products",
+                    "overwrite" => FALSE,
+                    "resource_type" => "image",
+                    "responsive" => TRUE,
+                ));
+                $path = Cloudder::getResult();
+                $link = Cloudder::getPublicId();
                 $product->images()->create(
                     [
-                        'url' => $path,
+                        'url' => $link,
                         'product_id' => $product->id,
                     ]
                     );
             
             }
         } else {
-            $path = $images->store('public/products');
+            $path = $images->getRealPath();
+            Cloudder::upload($path, null, array(
+                     "folder" => "Mueble_Maldonado/products",
+                    "overwrite" => FALSE,
+                    "resource_type" => "image",
+                    "responsive" => TRUE,
+                ));
+            $path = Cloudder::getResult();
+            $link = Cloudder::getPublicId();
             $image = Image::create(
                 [
-                    'url' => $path,
+                    'url' => $link,
                     'product_id' => $product->id,
                 ]
                 );

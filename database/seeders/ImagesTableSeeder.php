@@ -16,17 +16,13 @@ class ImagesTableSeeder extends Seeder
     public function run()
     {
         Image::truncate();
-
-        $faker = \Faker\Factory::create();
-
         //Asignacion de imagenes ficticias a productos
         $products = Product::all();
         foreach ($products as $product) {
             $num_images= rand(1, 3);
             for ($i = 0; $i < $num_images; $i++){
-                $image_name = $faker->image('public/storage/products', 400, 300, null);
                 Image::create([
-                    'url' =>'images'.$image_name,
+                    'url' =>'Mueble_Maldonado/products/Velador_1_Sin_Fondo_bcidzr',
                     'product_id'=> $product->id,
                 ]);
             }
