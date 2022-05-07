@@ -34,7 +34,7 @@ Route::get('products/room/{room}', 'App\\Http\\Controllers\\ProductController@sh
 
 Route::get('deliveries', 'App\\Http\\Controllers\\DeliveryController@index');
 Route::get('deliveries/all', 'App\\Http\\Controllers\\DeliveryController@all');
-Route::get('deliveries/{deliveries}', 'App\\Http\\Controllers\\DeliveryController@show');
+Route::get('deliveries/{delivery}', 'App\\Http\\Controllers\\DeliveryController@show');
 Route::get('deliveries/category/{category}', 'App\\Http\\Controllers\\DeliveryController@showProductsDeliveredByCategory');
 
 
