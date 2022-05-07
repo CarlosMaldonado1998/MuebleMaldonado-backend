@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Http\Resources\Delivery as DeliveryResource;
 use App\Http\Resources\DeliveryCollection;
 use Illuminate\Support\Facades\Storage;
+use Cloudder;
 
 class DeliveryController extends Controller
 {
@@ -45,8 +46,16 @@ class DeliveryController extends Controller
         $request->validate( self::$rules, self::$messages);
 
         $delivery = Delivery::create($request->all());
-        $path = $request->url->store('public/delivered');
-        $delivery->url = $path;
+        
+        $path = $request->url->getRealPath();
+        Cloudder::upload($path, null, array(
+            "folder"=>"Mueble_Maldonado/delivered",
+            "overwrite"=> FALSE,
+            "resource_typ"=>"image",
+            "responsive"=>TRUE
+        ));
+        $path = Cloudder::getResult();
+        $delivery->url = Cloudder::getPublicId();
         $delivery->save();
         return response()->json($delivery, 201);
     }
@@ -64,9 +73,18 @@ class DeliveryController extends Controller
         $delivery->description = $request->description;
         $delivery->category_id = $request->category_id;
         if($request->hasFile('url')) {
-            Storage::delete($delivery->url);
-            $path = $request->url->store('public/delivered');
-            $delivery->url = $path;
+            $publicId = $color->url;
+            Cloudder::destroyImage($publicId);
+            Cloudder::delete($publicId);
+            $delivery =$request->url->getRealPath();
+            Cloudder::upload($path, null, array(
+                "folder"=>"Mueble_Maldonado/delivered",
+                "overwrite"=>FALSE,
+                "resource_typ"=>"image",
+                "responsive"=>TRUE
+            ));
+            $path = Cloudder::getResult();
+            $delivery->url = Cloudder::getPublicId();
         }
         $delivery->update();
         return response()->json($delivery, 200);
@@ -74,7 +92,9 @@ class DeliveryController extends Controller
 
     public function delete (Delivery $delivery ){
         $this->authorize('delete',$delivery);
-        Storage::delete($delivery->url);
+        $publicId = $delivery->url;
+        Cloudder::destroyImage($publicId);
+        Cloudder::delete($publicId);
         $delivery->delete();
         return response()->json(null, 204);
     }

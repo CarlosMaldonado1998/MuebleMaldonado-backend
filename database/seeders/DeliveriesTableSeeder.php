@@ -22,15 +22,12 @@ class DeliveriesTableSeeder extends Seeder
         //Asignacion de categoria ficticia a productos entregados
         $categories = Category::all();
         foreach ( $categories as $category){
-           
-                $image_name = $faker->image('public/storage/delivered', 400, 300, null);
                 Delivery::create([
                     'title'=>$faker->word,
                     'description'=>$faker->paragraph,
-                    'url' =>'images'.$image_name,
+                    'url' =>'Mueble_Maldonado/delivered/delivered1_lfqv7k',
                     'category_id'=> $category->id,
-                ]);
-            
+                ]);  
         } 
     }
 }
